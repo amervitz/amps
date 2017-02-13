@@ -4,7 +4,7 @@
 RootModule = 'amps.psm1'
 
 # Version number of this module.
-ModuleVersion = '0.1.0'
+ModuleVersion = '0.2.0'
 
 # ID used to uniquely identify this module
 GUID = '11844c8e-40ec-41eb-8c05-9b7e494bf6ea'
@@ -43,13 +43,30 @@ PrivateData = @{
 
         # ReleaseNotes of this module
         ReleaseNotes = @"
-Initial release.
+Version 0.2.0:
+
+Add the Invoke-Splat function to directly splat a hash table or array located within a nested object. It has
+the alias of 'iat' to provide a shorthand version named after the At symbol (@), by 'Invoking At'.
+
+Example:
+
+Invoke-Splat Write-Host `$loginResult.Message
+
+---
+
+Version 0.1.0:
 
 Add the Enter-Object function for accessing the properties of an object or items of a hashtable as variables
 within a new scope without needing to refer to the containing object. This makes it easy to splat a nested 
-object without temporary variable assignments.
+object without temporary variable assignments. It has an alias of 'with' to provide a shorthand version that 
+makes it feel like a built-in language construct.
 
-It has an alias of 'with' to provide a shorthand version that makes it feel like a built-in language construct.
+Example:
+
+with `$loginResult {
+    Write-Host @Message
+}
+
 "@
     } # End of PSData hashtable
 

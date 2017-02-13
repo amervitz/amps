@@ -89,3 +89,83 @@ function Enter-Object {
         }
     }
 }
+
+<#
+.SYNOPSIS
+   Invoke-Splat invokes a command by splatting the provided hashtable or array.
+      
+.DESCRIPTION
+   Invoke-Splat invokes a command and splats the provided hashtable or array. It has an alias of 'iat' to
+   provide a shorthand version named after the At symbol (@), by 'Invoking At'.
+
+   The anticipated use of this function is to perform splatting operations on a nested object's properties 
+   or nested hashtable's items without having to perform temporary variable assignments to refer to the 
+   nested properties/items.
+
+   Invoke-Splat removes the need to use of temporary variables and provides a concise syntax when splatting
+   items located within nested objects and hash tables.
+
+.EXAMPLE
+   >
+   This example shows how a nested hashtable can be splatted directly without having to assign it to a new
+   temporary variable. Given the following hash table:
+
+   $loginResult = @{
+       Success = $false
+       Reason = 'Expired'
+       Message = @{
+           Object = "Your password has expired, please reset your password."
+           BackgroundColor = "Red"
+       }
+   }
+
+   Splatting the nested $loginResult.Message hash table normally requires an assignment to a new temporary 
+   variable followed by splatting the hash table variable to the command:
+
+   $message = $loginResult.Message
+   Write-Host @message
+
+   With Invoke-Splat, the nested hash table can be splatted directly against the command:
+
+   Invoke-Splat Write-Host $loginResult.Message
+
+.EXAMPLE
+   iat Write-Host $loginResult.Message
+
+   Building upon the data structure from the previous example, this example shows the use of the 'iat' alias.
+
+.EXAMPLE
+   iat {Write-Host -ForegroundColor Yellow} $loginResult.Message 
+
+   Building upon the data structure from the previous example, this shows how to invoke a command with additional
+   parameters to those in the InputObject parameter, by placing the command and its parameters in a script block.
+
+.EXAMPLE
+   $loginResult.Message | iat Write-Host
+
+   Building upon the data structure from the previous example, this shows how to pipe a hash table to be splatted.
+
+.OUTPUTS
+   Any objects returned by the supplied command will be returned.
+#>
+function Invoke-Splat {
+    [CmdletBinding()]
+    [Alias("iat")]
+    param (
+        # The command to execute.
+        [string]
+        $Command,
+
+        # The hash table or array to splat. See about_Splatting for usage.
+        [Parameter(Mandatory,ValueFromPipeline)]
+        [object]
+        $InputObject
+    )
+
+    # perform parameter validation here because [ValidateScript] doesn't work with [array]
+    if(-not ($InputObject -is [hashtable] -or $InputObject -is [array])) {
+        throw "Invoke-Splat: InputObject parameter type must a [hashtable] or [Array]"
+    }
+
+    Invoke-Expression -Command "$Command @InputObject" 
+}
