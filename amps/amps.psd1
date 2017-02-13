@@ -4,7 +4,7 @@
 RootModule = 'amps.psm1'
 
 # Version number of this module.
-ModuleVersion = '0.2.0'
+ModuleVersion = '0.2.1'
 
 # ID used to uniquely identify this module
 GUID = '11844c8e-40ec-41eb-8c05-9b7e494bf6ea'
@@ -22,10 +22,10 @@ Description = 'A PowerShell script module with advanced functions that extend Po
 PowerShellVersion = '5.0'
 
 # Functions to export from this module
-FunctionsToExport = 'Enter-Object'
+FunctionsToExport = 'Enter-Object','Invoke-Splat'
 
 # Aliases to export from this module
-AliasesToExport = 'with'
+AliasesToExport = 'with','iat'
 
 # Private data to pass to the module specified in RootModule/ModuleToProcess. This may also contain a PSData hashtable with additional module metadata used by PowerShell.
 PrivateData = @{
@@ -43,7 +43,7 @@ PrivateData = @{
 
         # ReleaseNotes of this module
         ReleaseNotes = @"
-Version 0.2.0:
+Version 0.2.1:
 
 Add the Invoke-Splat function to directly splat a hash table or array located within a nested object. It has
 the alias of 'iat' to provide a shorthand version named after the At symbol (@), by 'Invoking At'.
