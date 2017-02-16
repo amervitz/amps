@@ -149,6 +149,7 @@ function Enter-Object {
    Any objects returned by the supplied command will be returned.
 #>
 function Invoke-Splat {
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSAvoidUsingInvokeExpression", "")]
     [CmdletBinding()]
     [Alias("iat")]
     param (
